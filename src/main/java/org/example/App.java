@@ -16,25 +16,11 @@ public class App {
         try {
             Class.forName(JDBC_DRIVER);
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            preparedStatement = conn.prepareStatement("INSERT INTO public.accommodation " +
-                    "(type, bed_type, max_guests, description) values (?, ?, ?, ?)");
-            preparedStatement.setString(1, "hostel");
-            preparedStatement.setString(2, "continental");
-            preparedStatement.setInt(3, 2);
-            preparedStatement.setString(4, "Hostel room for two guests with a continental sized bed.");
-            preparedStatement.executeUpdate();
-
-            preparedStatement = conn.prepareStatement("INSERT INTO room_fair (value, season)" +
-                    "values (?, ?)");
-            preparedStatement.setDouble(1,250);
-            preparedStatement.setString(2,"Spring");
-            preparedStatement.executeUpdate();
-
-            preparedStatement = conn.prepareStatement("INSERT INTO public.accommodation_room_fair_relation " +
-                    "(accommodation_id, room_fair_id) values (?, ?)");
-            preparedStatement.setInt(1,1);
-            preparedStatement.setInt(2,1);
-            preparedStatement.executeUpdate();
+            Query queryStarter = new Query();
+            queryStarter.addAccommodationType("hostel", "continental", 2,
+                    "Hostel room for two guests with a continental sized bed.");
+            queryStarter.addRoomFair(250, "Summer");
+            queryStarter.addAccommodationRoomFairRelation(1, 1);
 
         } catch (Exception se) {
             se.printStackTrace();
@@ -54,6 +40,5 @@ public class App {
         }
         System.out.println("Goodbye!");
     }
-
 }
 
